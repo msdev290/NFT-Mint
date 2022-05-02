@@ -13,30 +13,18 @@ import { IReduxState } from "../../store/slices/state.interface";
 import { changeMint } from "src/store/slices/mint-thunk";
 import leftImage from "../../assets/images/minus.png";
 import rightImage from "../../assets/images/plus.png";
-import HeadModels from "../../constants/traits/head";
-import BodyModels from "../../constants/traits/body";
-import LegModels from "../../constants/traits/leg";
 
 interface INftItemProps {
-  nftItem: string;
+  nftItem: any;
 }
 
 function NftBox({ nftItem }: INftItemProps) {
-  let headId = Math.floor(Number(nftItem) / 100);
-  let bodyId = Math.floor((Number(nftItem) / 10) % 10);
-  let legId = Math.floor((Number(nftItem) % 100) % 10);
-  console.log(legId);
   return (
-    <div className="nft-item">
+    <div style={{width:100, height: 100}}>
       <img
-        src={"data:image/png;base64," + HeadModels[headId - 1].image}
+        src={nftItem.image}
         alt=""
       />
-      <img
-        src={"data:image/png;base64," + BodyModels[bodyId - 1].image}
-        alt=""
-      />
-      <img src={"data:image/png;base64," + LegModels[legId - 1].image} alt="" />
     </div>
   );
 }
@@ -202,7 +190,7 @@ function Minting() {
             </div>
             <div className="avatars">
               {nfts.length > 0 ? (
-                nfts.map((avatar) => <NftBox key={avatar} nftItem={avatar} />)
+                nfts.map((avatar, index) => <NftBox key={index} nftItem={avatar} />)
               ) : accountLoading ? (
                 <CircularProgress
                   size={120}

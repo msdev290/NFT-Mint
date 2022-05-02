@@ -14,11 +14,12 @@
         display: flex;
         overflow: auto;
         .nft-item {
-          float: left;
+          // float: left;
           width: 100px;
+          margin-left: 10px;
           img {
-            width: 70px;
-            height: 70px;
+            width: 160px;
+            height: 160px;
           }
         }
       }

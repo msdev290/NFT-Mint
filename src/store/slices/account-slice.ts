@@ -66,14 +66,13 @@ export const loadAccountDetails = createAsyncThunk("account/loadAccountDetails",
 
     dispatch(clearNfts());
 
-    const avatars:string[] = await avatarContract.ownedAvatars(address);
-    console.log(avatars);
-    avatars.map(avatar => {
-        dispatch(
-            fetchNft(avatar)
-        );
-    })
-
+    // const avatars:string[] = await avatarContract.ownedAvatars(address);
+    for(var i = 0; i< avatarBalance ; i++) {
+        const nftID = await avatarContract.tokenOfOwnerByIndex(address, i);
+        const getTokenUri = await avatarContract.tokenURI(nftID);
+        const tokendata = await axios.get(getTokenUri);
+        dispatch(fetchNft(tokendata.data));
+    }
     return {
         balances: {
             avatarBalance: Number(avatarBalance),
