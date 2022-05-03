@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Grid, Zoom } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -19,11 +19,17 @@ interface INftItemProps {
 }
 
 function NftBox({ nftItem }: INftItemProps) {
+  const video = useRef<HTMLVideoElement>(null);
+  const playVideo = (event: any) => {
+    video.current && video.current.play();
+  };
   return (
-    <div style={{width:100, height: 100}}>
-      <img
+    <div>
+      <video
+        ref={video}
+        loop
         src={nftItem.image}
-        alt=""
+        style={{ width: 100, height: 100 }}
       />
     </div>
   );
@@ -58,13 +64,13 @@ function Minting() {
   };
 
   const onNext = () => {
-      if(count < 20) {
-        setCount(count + 1);
-      }
+    if (count < 20) {
+      setCount(count + 1);
+    }
   };
-  const handleValue = (e:any) => {
-        setCount(e.target.value);
-  }
+  const handleValue = (e: any) => {
+    setCount(e.target.value);
+  };
 
   const onPrevious = () => {
     if (count > 1) {
@@ -126,8 +132,9 @@ function Minting() {
                         fontSize: "3.2rem",
                         textAlign: "center",
                       }}
-                      onChange = {handleValue}
-                      min="1" max="20"
+                      onChange={handleValue}
+                      min="1"
+                      max="20"
                     ></input>
                   </Grid>
                   <Grid item xs={3}>
@@ -190,7 +197,9 @@ function Minting() {
             </div>
             <div className="avatars">
               {nfts.length > 0 ? (
-                nfts.map((avatar, index) => <NftBox key={index} nftItem={avatar} />)
+                nfts.map((avatar, index) => (
+                  <NftBox key={index} nftItem={avatar} />
+                ))
               ) : accountLoading ? (
                 <CircularProgress
                   size={120}
